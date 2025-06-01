@@ -31,8 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $message = '<div class="alert2">
                         <span class="closebtn">&times;</span>
-                        Something went wrong!
-                    </div>' . $stmt->error;
+                        Something went wrong! ' . $stmt->error . '</div>';
     }
 
     $stmt->close();
