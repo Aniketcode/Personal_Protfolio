@@ -4,12 +4,10 @@ $username = "root";
 $password = "";
 $dbname = "protfolio";
 
-$nameErr = "";
-$message = ""; // Initialize the message variable
-// Create connection
+$message = "";
+
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -18,20 +16,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $subject = $_POST['subject'];
-    $message = $_POST['message'];
+    $msg = $_POST['message'];
 
-    $stmt = $conn->prepare("INSERT INTO contact(name,email,subject,message) VALUES (?,?,?,?)");
-    $stmt->bind_param("ssss", $name, $email, $subject, $message);
+    $stmt = $conn->prepare("INSERT INTO contact (name, email, subject, message) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $name, $email, $subject, $msg);
 
     if ($stmt->execute()) {
-        $message = '<div class="alert">
-                        <span class="closebtn">&times;</span>
-                        Your message has been sent successfully!
-                    </div>';
+        $message = '<div class="alert"><span class="closebtn">&times;</span>Your message has been sent successfully!</div>';
     } else {
-        $message = '<div class="alert2">
-                        <span class="closebtn">&times;</span>
-                        Something went wrong! ' . $stmt->error . '</div>';
+        $message = '<div class="alert2"><span class="closebtn">&times;</span>Something went wrong: ' . $stmt->error . '</div>';
     }
 
     $stmt->close();
